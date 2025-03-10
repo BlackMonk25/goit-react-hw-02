@@ -1,51 +1,79 @@
-import react, { useState, useEffect } from "react";
-import Feedback from "./Feedback";
-import Options from "./Options";
-import "./App.css"; 
+import React, { useState, useEffect } from 'react';
+import Feedback from './Feedback';
+import Notification from './Notification';
+import Options from './Options';
+import styles from './App.module.css'; // Імпорт стилів через CSS Module
 
 const App = () => {
-  const [feedback, setFeedback] = useState(() => {
-    const savedFeedback = localStorage.getItem("feedback");
-    return savedFeedback ? JSON.parse(savedFeedback) : { good: 0, neutral: 0, bad: 0 };
-  });
+  const getInitialState = () => {
+    const savedGood = localStorage.getItem('good');
+    const savedNeutral = localStorage.getItem('neutral');
+    const savedBad = localStorage.getItem('bad');
+    
+    return {
+      good: savedGood ? parseInt(savedGood) : 0,
+      neutral: savedNeutral ? parseInt(savedNeutral) : 0,
+      bad: savedBad ? parseInt(savedBad) : 0,
+    };
+  };
+
+  const [good, setGood] = useState(getInitialState().good);
+  const [neutral, setNeutral] = useState(getInitialState().neutral);
+  const [bad, setBad] = useState(getInitialState().bad);
+
+  const totalFeedback = good + neutral + bad;
+  const positiveFeedback = totalFeedback ? Math.round((good / totalFeedback) * 100) : 0;
 
   useEffect(() => {
-    localStorage.setItem("feedback", JSON.stringify(feedback));
-  }, [feedback]);
-
-  const handleFeedback = (type) => {
-    setFeedback((prevFeedback) => ({
-      ...prevFeedback,
-      [type]: prevFeedback[type] + 1,
-    }));
-  };
+    localStorage.setItem('good', good);
+    localStorage.setItem('neutral', neutral);
+    localStorage.setItem('bad', bad);
+  }, [good, neutral, bad]);
 
   const resetFeedback = () => {
-    setFeedback({ good: 0, neutral: 0, bad: 0 });
+    setGood(0);
+    setNeutral(0);
+    setBad(0);
   };
 
-  const totalFeedback = feedback.good + feedback.neutral + feedback.bad;
-
   return (
-    <div className="app-wrapper">
-      <div className="app-container">
-        <h1 className="title">Sip Happens Café</h1>
-        <p className="description">Please leave your feedback about our service by selecting one of the options below.</p>
-        <div className="buttons-container">
-          <Options onLeaveFeedback={handleFeedback} />
-          <button className="reset-button" onClick={resetFeedback}>Reset Feedback</button>
-        </div>
+    <div className={styles.body}>
+      <div className={styles.container}>
+        <h1 className={styles.title}>Sip Happens Café - Відгуки</h1>
+
         {totalFeedback > 0 ? (
-          <Feedback feedback={feedback} total={totalFeedback} />
+          <Feedback 
+            good={good} 
+            neutral={neutral} 
+            bad={bad} 
+            totalFeedback={totalFeedback} 
+            positiveFeedback={positiveFeedback}
+          />
         ) : (
-          <p className="notification">No feedback given yet.</p>
+          <Notification />
         )}
+
+        {totalFeedback > 0 && (
+          <Options totalFeedback={totalFeedback} onReset={resetFeedback} />
+        )}
+
+        <div>
+          <button className={styles.button} onClick={() => setGood(good + 1)}>Добре</button>
+          <button className={styles.button} onClick={() => setNeutral(neutral + 1)}>Нейтрально</button>
+          <button className={styles.button} onClick={() => setBad(bad + 1)}>Погано</button>
+        </div>
       </div>
     </div>
   );
 };
 
 export default App;
+
+
+
+
+
+
 
 
 

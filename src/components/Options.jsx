@@ -1,16 +1,23 @@
+// import React from 'react';
+import styles from './App.module.css'; 
 
-
-
-const Options = ({ onLeaveFeedback }) => {
+const Options = ({ totalFeedback, onReset }) => {
   return (
-    <div>
-      <button onClick={() => onLeaveFeedback("good")}>Good</button>
-      <button onClick={() => onLeaveFeedback("neutral")}>Neutral</button>
-      <button onClick={() => onLeaveFeedback("bad")}>Bad</button>
+    <div className={styles.options}>
+      {totalFeedback > 0 && (
+        <button className={styles.resetButton} onClick={onReset}>Скинути відгуки</button>
+      )}
     </div>
   );
 };
 
 export default Options;
+
+
+
+
+
+
+
 
 

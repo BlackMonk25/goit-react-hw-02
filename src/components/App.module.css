@@ -1,0 +1,79 @@
+/* Загальний стиль для body */
+.body {
+  font-family: "Arial", sans-serif;
+  background-color: #f29881;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 190vh;
+}
+
+/* Контейнер для всього вмісту */
+.container {
+  text-align: center;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 30px;
+  width: 400px;
+}
+
+/* Заголовок */
+.title {
+  color: #333;
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+/* Статистика відгуків */
+.subtitle {
+  color: #5f6368;
+  font-size: 20px;
+  margin-bottom: 15px;
+}
+
+/* Стилі для статистичних параграфів */
+.text {
+  font-size: 16px;
+  color: #555;
+  margin: 5px 0;
+}
+
+/* Кнопки для відгуків */
+.button {
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  margin: 10px;
+  font-size: 16px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.button:hover {
+  background-color: #45a049;
+}
+
+/* Кнопка для скидання відгуків */
+.resetButton {
+  background-color: #f44336;
+}
+
+.resetButton:hover {
+  background-color: #d32f2f;
+}
+
+/* Стилі для компонента Notification */
+.notification {
+  font-size: 18px;
+  color: #d32f2f;
+  margin-top: 20px;
+}
+
+/* Стилі для компонента Options (кнопка Reset) */
+.options {
+  margin-top: 20px;
+}

@@ -1,16 +1,22 @@
+// import React from 'react';
+import styles from './App.module.css'; // Імпортуємо модуль стилів
 
-
-const Feedback = ({ feedback, total, positive, neutral, negative }) => {
+const Feedback = ({ good, neutral, bad, totalFeedback, positiveFeedback }) => {
   return (
-    <div className="feedback-container">
-      <h2>Feedback Summary</h2>
-      <p>Good: {feedback.good} {positive}</p>
-      <p>Neutral: {feedback.neutral} {neutral}</p>
-      <p>Bad: {feedback.bad} {negative}</p>
-      <p>Total: {total}%</p>
+    <div>
+      <h2 className={styles.subtitle}>Статистика відгуків:</h2>
+      <p className={styles.text}>Добре: {good}</p>
+      <p className={styles.text}>Нейтрально: {neutral}</p>
+      <p className={styles.text}>Погано: {bad}</p>
+      <p className={styles.text}>Загальна кількість відгуків: {totalFeedback}</p>
+      <p className={styles.text}>Позитивних відгуків: {positiveFeedback}%</p>
     </div>
   );
 };
 
 export default Feedback;
+
+
+
+
 
