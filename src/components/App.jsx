@@ -1,45 +1,44 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import Feedback from './Feedback';
 import Notification from './Notification';
 import Options from './Options';
-import styles from './App.module.css'; // Імпорт стилів через CSS Module
+import Description from './Description';
+import styles from './App.module.css';
+
+const getInitialState = () => {
+  return () => ({
+    good: parseInt(localStorage.getItem('good')) || 0,
+    neutral: parseInt(localStorage.getItem('neutral')) || 0,
+    bad: parseInt(localStorage.getItem('bad')) || 0,
+  });
+};
 
 const App = () => {
-  const getInitialState = () => {
-    const savedGood = localStorage.getItem('good');
-    const savedNeutral = localStorage.getItem('neutral');
-    const savedBad = localStorage.getItem('bad');
-    
-    return {
-      good: savedGood ? parseInt(savedGood) : 0,
-      neutral: savedNeutral ? parseInt(savedNeutral) : 0,
-      bad: savedBad ? parseInt(savedBad) : 0,
-    };
-  };
+  const [feedback, setFeedback] = useState(getInitialState());
 
-  const [good, setGood] = useState(getInitialState().good);
-  const [neutral, setNeutral] = useState(getInitialState().neutral);
-  const [bad, setBad] = useState(getInitialState().bad);
-
+  const { good, neutral, bad } = feedback;
   const totalFeedback = good + neutral + bad;
   const positiveFeedback = totalFeedback ? Math.round((good / totalFeedback) * 100) : 0;
 
   useEffect(() => {
-    localStorage.setItem('good', good);
-    localStorage.setItem('neutral', neutral);
-    localStorage.setItem('bad', bad);
-  }, [good, neutral, bad]);
+    Object.keys(feedback).forEach((key) => {
+      localStorage.setItem(key, feedback[key]);
+    });
+  }, [feedback]);
 
-  const resetFeedback = () => {
-    setGood(0);
-    setNeutral(0);
-    setBad(0);
+  const resetFeedback = useCallback(() => {
+    setFeedback({ good: 0, neutral: 0, bad: 0 });
+  }, []);
+
+  const updateFeedback = (type) => {
+    setFeedback((prev) => ({ ...prev, [type]: prev[type] + 1 }));
   };
 
   return (
     <div className={styles.body}>
       <div className={styles.container}>
         <h1 className={styles.title}>Sip Happens Café - Відгуки</h1>
+        <Description />
 
         {totalFeedback > 0 ? (
           <Feedback 
@@ -53,15 +52,13 @@ const App = () => {
           <Notification />
         )}
 
-        {totalFeedback > 0 && (
-          <Options totalFeedback={totalFeedback} onReset={resetFeedback} />
-        )}
-
-        <div>
-          <button className={styles.button} onClick={() => setGood(good + 1)}>Добре</button>
-          <button className={styles.button} onClick={() => setNeutral(neutral + 1)}>Нейтрально</button>
-          <button className={styles.button} onClick={() => setBad(bad + 1)}>Погано</button>
-        </div>
+        <Options 
+          onGood={() => updateFeedback('good')}
+          onNeutral={() => updateFeedback('neutral')}
+          onBad={() => updateFeedback('bad')}
+          onReset={resetFeedback}
+          totalFeedback={totalFeedback}
+        />
       </div>
     </div>
   );

@@ -1,0 +1,38 @@
+.options {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.button {
+  padding: 10px 20px;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.button:hover {
+  opacity: 0.8;
+}
+
+.button:nth-child(1) {
+  background-color: #101110;
+  color: white;
+}
+
+.button:nth-child(2) {
+  background-color: #101110;
+  color: white;
+}
+
+.button:nth-child(3) {
+  background-color: #101110;
+  color: white;
+}
+
+.button:nth-child(4) {
+  background-color: #101110;
+  color: white;
+}
